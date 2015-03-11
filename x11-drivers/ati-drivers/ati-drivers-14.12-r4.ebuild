@@ -339,8 +339,9 @@ src_prepare() {
 	sed -i -e 's/__SMP__/CONFIG_SMP/' *.c *h || die "SMP sed failed"
 	sed -i -e 's/ifdef MODVERSIONS/ifdef CONFIG_MODVERSIONS/' *.c *.h \
 		|| die "MODVERSIONS sed failed"
-
-	epatch_user
+		
+	#http://forums.gentoo.org/viewtopic-t-1010546.html
+	epatch "${FILESDIR}/manjaro_fglrx_319.patch"
 }
 
 src_compile() {
