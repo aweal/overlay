@@ -25,7 +25,6 @@ KEYWORDS="-* amd64 x86"
 RESTRICT="bindist test"
 
 RDEPEND="
-	#<=x11-base/xorg-server-1.16.49[-minimal]
 	>=app-admin/eselect-opengl-1.0.7
 	app-admin/eselect-opencl
 	sys-power/acpid
