@@ -1,5 +1,3 @@
-# Copyright open-overlay 2015 by Alex
-
 EAPI=5
 inherit eutils versionator
 
@@ -7,18 +5,23 @@ SLOT="0"
 RDEPEND=">=virtual/jdk-1.7"
 
 MY_PN="idea"
-
+VERSION="141.588.1"
+#http://download.jetbrains.com/idea/ideaIC-141.588.1.tar.gz
 RESTRICT="strip"
 QA_TEXTRELS="opt/${P}/bin/libbreakgen.so"
 
 DESCRIPTION="IntelliJ IDEA is an intelligent Java IDE (Community Edition)"
 HOMEPAGE="http://jetbrains.com/idea/"
-#https://download.jetbrains.com/idea/ideaIC-141.498.1.tar.gz
-SRC_URI="http://download.jetbrains.com/${MY_PN}/${MY_PN}IC-141.498.1.tar.gz"
+
+        #http://download.jetbrains.com/idea/ideaIC-141.588.1.tar.gz
+	#http://download.jetbrains.com/idea/ideaIC-141.588.1.tar.gz
+#SRC_URI="http://download.jetbrains.com/${MY_PN}/${MY_PN}IC-141.588.1.tar.gz"
+SRC_URI="http://download.jetbrains.com/${MY_PN}/${MY_PN}IC-${VERSION}.tar.gz"
 LICENSE="Apache-2.0"
 IUSE=""
 KEYWORDS="~amd64 ~x86"
-S="${WORKDIR}/${MY_PN}-IC-141.498.1"
+
+S="${WORKDIR}/${MY_PN}-IC-${VERSION}"
 
 src_install() {
 	local dir="/opt/${PN}"
