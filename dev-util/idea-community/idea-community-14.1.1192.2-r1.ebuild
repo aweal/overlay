@@ -5,23 +5,27 @@ SLOT="0"
 RDEPEND=">=virtual/jdk-1.7"
 
 MY_PN="idea"
-VERSION="141.588.1"
-#http://download.jetbrains.com/idea/ideaIC-141.588.1.tar.gz
+#http://download.jetbrains.com/idea/ideaIC-141.1192.2.tar.gz
+VERSION="141.1192.2"
 RESTRICT="strip"
 QA_TEXTRELS="opt/${P}/bin/libbreakgen.so"
-
 DESCRIPTION="IntelliJ IDEA is an intelligent Java IDE (Community Edition)"
 HOMEPAGE="http://jetbrains.com/idea/"
-
-        #http://download.jetbrains.com/idea/ideaIC-141.588.1.tar.gz
-	#http://download.jetbrains.com/idea/ideaIC-141.588.1.tar.gz
-#SRC_URI="http://download.jetbrains.com/${MY_PN}/${MY_PN}IC-141.588.1.tar.gz"
 SRC_URI="http://download.jetbrains.com/${MY_PN}/${MY_PN}IC-${VERSION}.tar.gz"
 LICENSE="Apache-2.0"
 IUSE=""
 KEYWORDS="~amd64 ~x86"
+#mkdir -p ${WORKDIR}/${MY_PN}-IC-${VERSION}
+#S="${WORKDIR}/${MY_PN}-IC-${VERSION}"
+#S="${WORKDIR}/idea-IC-${PV}"
+#S="${WORKDIR}`ls ${WORKDIR}`"
 
-S="${WORKDIR}/${MY_PN}-IC-${VERSION}"
+src_unpack(){
+	unpack ${A}
+	S="${WORKDIR}/`ls ${WORKDIR}`"
+
+
+}
 
 src_install() {
 	local dir="/opt/${PN}"
