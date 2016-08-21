@@ -1,0 +1,11 @@
+--- plugins/lensfun/lensfun.c	2011-03-27 21:53:27.000000000 +0400
++++ plugins/lensfun/lensfun.c	2016-08-21 23:57:39.544506273 +0300
+@@ -652,7 +652,7 @@
+ 			}
+ 
+ 			/* Start threads to apply phase 2, Vignetting and CA Correction */
+-			if (effective_flags & (LF_MODIFY_VIGNETTING | LF_MODIFY_CCI)) 
++			if (effective_flags & LF_MODIFY_VIGNETTING ) 
+ 			{
+ 				/* Phase 2 is corrected inplace, so copy input first */
+ 				guint y_offset, y_per_thread, threaded_h;

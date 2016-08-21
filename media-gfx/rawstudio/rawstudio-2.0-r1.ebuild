@@ -49,7 +49,8 @@ src_prepare() {
 		"${FILESDIR}"/${P}-libpng15.patch \
 		"${FILESDIR}"/${P}-g_thread_init.patch \
 		"${FILESDIR}"/${P}-icon.patch \
-		"${FILESDIR}"/${P}-lcms2.patch
+		"${FILESDIR}"/${P}-lcms2.patch \
+               "${FILESDIR}"/${P}-lensfun.patch
 	eautoreconf
 }
 
