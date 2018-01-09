@@ -1,0 +1,12 @@
+--- a/gnupg.py
++++ b/gnupg.py
+@@ -246,7 +246,7 @@
+                      "FILE_DONE", "PKA_TRUST_GOOD", "PKA_TRUST_BAD", "BADMDC",
+                      "GOODMDC", "NO_SGNR", "NOTATION_NAME", "NOTATION_DATA",
+                      "PROGRESS", "PINENTRY_LAUNCHED", "NEWSIG",
+-                     "KEY_CONSIDERED"):
++                     "KEY_CONSIDERED", "DECRYPTION_KEY"):
+             pass
+         elif key == "BADSIG":  # pragma: no cover
+             self.valid = False
+

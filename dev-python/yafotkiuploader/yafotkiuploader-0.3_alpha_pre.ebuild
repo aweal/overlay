@@ -3,10 +3,9 @@
 # $Header: $
 
 EAPI="5"
-PYTHON_COMPAT=( python{3_2,3_3,3_4} )
-PYTHON_DEPEND="3"
+PYTHON_COMPAT=( python{3_2,3_3,3_4,3_5,3_6} )
 
-inherit git-r3 distutils
+inherit git-r3 distutils-r1
 
 DESCRIPTION="Command line script, to upload photos to the http://fotki.yandex.ru service. http://svetlyak.ru/blog/about-design-and-move-to-git/"
 HOMEPAGE="https://github.com/svetlyak40wt/yafotkiuploader"
@@ -26,19 +25,6 @@ DEPEND="dev-python/anyjson
   
 RDEPEND="${DEPEND}"
 
-python_test() {
-	esetup.py test
+python_compile() {
+	distutils-r1_python_compile
 }
-
-
-
-src_compile() {
-
-	distutils_src_compile
-}
-
-src_install() {
-
-	      distutils_src_install
-}
-   
