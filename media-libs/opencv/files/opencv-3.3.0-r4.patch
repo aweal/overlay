@@ -1,0 +1,134 @@
+diff -ruN a/modules/imgcodecs/src/grfmt_png.cpp b/modules/imgcodecs/src/grfmt_png.cpp
+--- a/modules/imgcodecs/src/grfmt_png.cpp	2017-08-04 00:58:23.000000000 +0100
++++ b/modules/imgcodecs/src/grfmt_png.cpp	2017-11-12 00:00:18.961113318 +0000
+@@ -59,7 +59,7 @@
+ #endif
+ 
+ #ifdef HAVE_LIBPNG_PNG_H
+-#include <libpng/png.h>
++#include <libpng16/png.h>
+ #else
+ #include <png.h>
+ #endif
+diff -ruN a/modules/videoio/src/cap_libv4l.cpp b/modules/videoio/src/cap_libv4l.cpp
+--- a/modules/videoio/src/cap_libv4l.cpp	2017-08-04 00:58:23.000000000 +0100
++++ b/modules/videoio/src/cap_libv4l.cpp	2017-11-12 00:21:56.744502059 +0000
+@@ -257,7 +257,7 @@
+ #include <sys/ioctl.h>
+ 
+ #ifdef HAVE_CAMV4L
+-#include <linux/videodev.h>
++#include <linux/videodev2.h>
+ #endif
+ #ifdef HAVE_CAMV4L2
+ #include <linux/videodev2.h>
+diff -ruN a/modules/videoio/src/cap_v4l.cpp b/modules/videoio/src/cap_v4l.cpp
+--- a/modules/videoio/src/cap_v4l.cpp	2017-08-04 00:58:23.000000000 +0100
++++ b/modules/videoio/src/cap_v4l.cpp	2017-11-12 00:18:53.623953491 +0000
+@@ -230,10 +230,10 @@
+ #include <linux/videodev2.h>
+ #endif
+ 
+-#ifdef HAVE_VIDEOIO
++/*#ifdef HAVE_VIDEOIO
+ // NetBSD compability layer with V4L2
+ #include <sys/videoio.h>
+-#endif
++#endif*/
+ 
+ /* Defaults - If your board can do better, set it here.  Set for the most common type inputs. */
+ #define DEFAULT_V4L_WIDTH  640
+diff -ruN a/cmake/OpenCVFindLibsGrfmt.cmake b/cmake/OpenCVFindLibsGrfmt.cmake
+--- a/cmake/OpenCVFindLibsGrfmt.cmake	2017-11-12 00:35:09.363920390 +0000
++++ b/cmake/OpenCVFindLibsGrfmt.cmake	2017-11-12 00:48:01.610749508 +0000
+@@ -158,9 +158,9 @@
+     include(FindPNG)
+     if(PNG_FOUND)
+       include(CheckIncludeFile)
+-      check_include_file("${PNG_PNG_INCLUDE_DIR}/libpng/png.h" HAVE_LIBPNG_PNG_H)
++      check_include_file("${PNG_PNG_INCLUDE_DIR}/libpng16/png.h" HAVE_LIBPNG_PNG_H)
+       if(HAVE_LIBPNG_PNG_H)
+-        ocv_parse_header("${PNG_PNG_INCLUDE_DIR}/libpng/png.h" PNG_VERSION_LINES PNG_LIBPNG_VER_MAJOR PNG_LIBPNG_VER_MINOR PNG_LIBPNG_VER_RELEASE)
++        ocv_parse_header("${PNG_PNG_INCLUDE_DIR}/libpng16/png.h" PNG_VERSION_LINES PNG_LIBPNG_VER_MAJOR PNG_LIBPNG_VER_MINOR PNG_LIBPNG_VER_RELEASE)
+       else()
+         ocv_parse_header("${PNG_PNG_INCLUDE_DIR}/png.h" PNG_VERSION_LINES PNG_LIBPNG_VER_MAJOR PNG_LIBPNG_VER_MINOR PNG_LIBPNG_VER_RELEASE)
+       endif()
+diff -ruN a/cmake/OpenCVFindLibsVideo.cmake b/cmake/OpenCVFindLibsVideo.cmake
+--- a/cmake/OpenCVFindLibsVideo.cmake	2017-11-12 00:35:09.365920330 +0000
++++ b/cmake/OpenCVFindLibsVideo.cmake	2017-11-12 00:59:08.704746650 +0000
+@@ -192,9 +192,10 @@
+       set(HAVE_LIBV4L NO)
+     endif()
+   endif()
+-  CHECK_INCLUDE_FILE(linux/videodev.h HAVE_CAMV4L)
++  CHECK_INCLUDE_FILE(linux/videodev2.h HAVE_CAMV4L)
+   CHECK_INCLUDE_FILE(linux/videodev2.h HAVE_CAMV4L2)
+-  CHECK_INCLUDE_FILE(sys/videoio.h HAVE_VIDEOIO)
++#  CHECK_INCLUDE_FILE(sys/videoio.h HAVE_VIDEOIO)
++  set(HAVE_VIDEOIO NO)
+ endif(WITH_V4L)
+ 
+ # --- OpenNI ---
+diff -Naur a/cmake/OpenCVCompilerOptions.cmake b/cmake/OpenCVCompilerOptions.cmake
+--- a/cmake/OpenCVCompilerOptions.cmake	2017-11-12 01:03:32.499839618 +0000
++++ b/cmake/OpenCVCompilerOptions.cmake	2017-11-12 01:43:24.528716102 +0000
+@@ -120,23 +120,24 @@
+   add_extra_compiler_option(-Wformat)
+   add_extra_compiler_option(-Werror=format-security -Wformat)
+   add_extra_compiler_option(-Wmissing-declarations)
+-  add_extra_compiler_option(-Wmissing-prototypes)
+-  add_extra_compiler_option(-Wstrict-prototypes)
++#  add_extra_compiler_option(-Wmissing-prototypes)
++#  add_extra_compiler_option(-Wstrict-prototypes)
+   add_extra_compiler_option(-Wundef)
+   add_extra_compiler_option(-Winit-self)
+   add_extra_compiler_option(-Wpointer-arith)
+   add_extra_compiler_option(-Wshadow)
+-  add_extra_compiler_option(-Wsign-promo)
++#  add_extra_compiler_option(-Wsign-promo)
+   add_extra_compiler_option(-Wuninitialized)
+   add_extra_compiler_option(-Winit-self)
++#  add_extra_compiler_option(-fvisibility-inlines-hidden)
+ 
+   if(ENABLE_NOISY_WARNINGS)
+     add_extra_compiler_option(-Wcast-align)
+     add_extra_compiler_option(-Wstrict-aliasing=2)
+   else()
+     add_extra_compiler_option(-Wno-narrowing)
+-    add_extra_compiler_option(-Wno-delete-non-virtual-dtor)
+-    add_extra_compiler_option(-Wno-unnamed-type-template-args)
++#    add_extra_compiler_option(-Wno-delete-non-virtual-dtor)
++#    add_extra_compiler_option(-Wno-unnamed-type-template-args)
+     add_extra_compiler_option(-Wno-comment)
+   endif()
+   add_extra_compiler_option(-fdiagnostics-show-option)
+@@ -281,7 +282,7 @@
+ # set default visibility to hidden
+ if(CMAKE_COMPILER_IS_GNUCXX AND CMAKE_OPENCV_GCC_VERSION_NUM GREATER 399)
+   add_extra_compiler_option(-fvisibility=hidden)
+-  add_extra_compiler_option(-fvisibility-inlines-hidden)
++#  add_extra_compiler_option(-fvisibility-inlines-hidden)
+ endif()
+ 
+ #combine all "extra" options
+diff -Naur a/CMakeLists.txt b/CMakeLists.txt
+--- a/CMakeLists.txt	2017-11-12 02:34:10.044945717 +0000
++++ b/CMakeLists.txt	2017-11-12 02:31:57.957887831 +0000
+@@ -1400,6 +1400,8 @@
+ endif()
+ 
+ # ========================== python ==========================
++set(PYTHON_INCLUDE_DIR "/usr/include/python2.7")
++set(PYTHON_LIBRARY "/usr/lib/python2.7")
+ status("")
+ status("  Python 2:")
+ status("    Interpreter:"     PYTHON2INTERP_FOUND  THEN "${PYTHON2_EXECUTABLE} (ver ${PYTHON2_VERSION_STRING})"       ELSE NO)
+@@ -1413,6 +1415,8 @@
+   status("    packages path:" PYTHON2_EXECUTABLE         THEN "${PYTHON2_PACKAGES_PATH}"                                    ELSE "-")
+ endif()
+ 
++set(PYTHON_INCLUDE_DIR "/usr/include/python3.4m")
++set(PYTHON_LIBRARY "/usr/lib/python3.4")
+ status("")
+ status("  Python 3:")
+ status("    Interpreter:"     PYTHON3INTERP_FOUND  THEN "${PYTHON3_EXECUTABLE} (ver ${PYTHON3_VERSION_STRING})"       ELSE NO)
