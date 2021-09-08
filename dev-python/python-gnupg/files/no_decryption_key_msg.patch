@@ -5,7 +5,7 @@
                       "GOODMDC", "NO_SGNR", "NOTATION_NAME", "NOTATION_DATA",
                       "PROGRESS", "PINENTRY_LAUNCHED", "NEWSIG",
 -                     "KEY_CONSIDERED"):
-+                     "KEY_CONSIDERED", "DECRYPTION_KEY"):
++                     "KEY_CONSIDERED", "DECRYPTION_KEY", "DECRYPTION_COMPLIANCE_MODE"):
              pass
          elif key == "BADSIG":  # pragma: no cover
              self.valid = False
