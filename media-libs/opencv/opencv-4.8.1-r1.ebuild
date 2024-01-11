@@ -203,8 +203,7 @@ PATCHES=(
 	"${FILESDIR}/${PN}-4.5.0-link-with-cblas-for-lapack.patch"
 	"${FILESDIR}/${PN}-4.8.0-arm64-fp16.patch"
 	"${FILESDIR}/${PN}-4.8.0-fix-cuda-12.2.0.patch"
-
-#	"${FILESDIR}/${PN}-4.8.1-use-system-flatbuffers.patch"
+    "${FILESDIR}/${PN}-4.8.0-fix-flatbuffer.patch"
 	"${FILESDIR}/${PN}-4.8.1-eliminate-lto-compiler-warnings.patch"
 	"${FILESDIR}/${PN}-4.8.1-python3_12-support.patch"
 
