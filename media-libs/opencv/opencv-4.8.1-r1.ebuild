@@ -45,7 +45,7 @@ SRC_URI="https://github.com/${PN}/${PN}/archive/${PV}.tar.gz -> ${P}.tar.gz
 
 LICENSE="Apache-2.0"
 SLOT="0/${PV}" # subslot = libopencv* soname version
-KEYWORDS="~amd64 ~arm ~arm64 ~loong ~ppc ~ppc64 ~riscv ~x86"
+KEYWORDS="amd64 ~arm arm64 ~loong ~ppc ~ppc64 ~riscv x86"
 IUSE="contrib contribcvv contribdnn contribfreetype contribhdf contribovis contribsfm contribxfeatures2d cuda cudnn debug dnnsamples +eigen examples +features2d ffmpeg gdal gflags glog gphoto2 gstreamer gtk3 ieee1394 jpeg jpeg2k lapack non-free opencl openexr opengl openmp opencvapps png +python qt5 qt6 tesseract testprograms tbb tiff vaapi v4l vtk webp xine video_cards_intel"
 
 # The following lines are shamelessly stolen from ffmpeg-9999.ebuild with modifications
@@ -117,7 +117,7 @@ REQUIRED_USE="
 
 RDEPEND="
 	app-arch/bzip2[${MULTILIB_USEDEP}]
-	<dev-libs/protobuf-23:=[${MULTILIB_USEDEP}]
+	dev-libs/protobuf:=[${MULTILIB_USEDEP}]
 	sys-libs/zlib[${MULTILIB_USEDEP}]
 	cuda? ( dev-util/nvidia-cuda-toolkit:0= )
 	cudnn? ( dev-libs/cudnn:= )
@@ -203,7 +203,8 @@ PATCHES=(
 	"${FILESDIR}/${PN}-4.5.0-link-with-cblas-for-lapack.patch"
 	"${FILESDIR}/${PN}-4.8.0-arm64-fp16.patch"
 	"${FILESDIR}/${PN}-4.8.0-fix-cuda-12.2.0.patch"
-    "${FILESDIR}/${PN}-4.8.0-fix-flatbuffer.patch"
+
+	"${FILESDIR}/${PN}-4.8.1-use-system-flatbuffers.patch"
 	"${FILESDIR}/${PN}-4.8.1-eliminate-lto-compiler-warnings.patch"
 	"${FILESDIR}/${PN}-4.8.1-python3_12-support.patch"
 
@@ -212,6 +213,8 @@ PATCHES=(
 	"${FILESDIR}/${PN}-4.8.1-drop-python2-detection.patch"
 	"${FILESDIR}/${PN}-4.8.1-libpng16.patch"
 	"${FILESDIR}/${PN}-4.8.1-ade-0.1.2a.tar.gz.patch"
+
+	"${FILESDIR}/${PN}-4.8.1-protobuf-22.patch" # bug 909087, in 4.9.0
 
 	# TODO applied in src_prepare
 	# "${FILESDIR}/${PN}_contrib-${PV}-rgbd.patch"
@@ -239,10 +242,6 @@ pkg_pretend() {
 pkg_setup() {
 	[[ ${MERGE_TYPE} != binary ]] && use openmp && tc-check-openmp
 	use java && java-pkg-opt-2_pkg_setup
-}
-
-src_unpack() {
-	unpack $(echo "${A}" | tr ' ' '\n' | grep -vP "(ade-0.1.2|NVIDIAOpticalFlowSDK)")
 }
 
 src_prepare() {
@@ -368,8 +367,7 @@ multilib_src_configure() {
 		-DENABLE_DOWNLOAD=yes
 		-DOPENCV_ENABLE_NONFREE=$(usex non-free)
 		-DWITH_QUIRC=OFF # Do not have dependencies
-#		-DWITH_FLATBUFFERS=$(usex contribdnn)
-        -DWITH_FLATBUFFERS=$(multilib_native_usex contribdnn)
+		-DWITH_FLATBUFFERS=$(multilib_native_usex contribdnn)
 		-DWITH_1394=$(usex ieee1394)
 	#	-DWITH_AVFOUNDATION=OFF # IOS
 		-DWITH_VTK=$(multilib_native_usex vtk)
@@ -545,7 +543,7 @@ multilib_src_configure() {
 	# ===================================================
 	if use contrib; then
 		mycmakeargs+=(
-            -DBUILD_opencv_dnn=$(multilib_native_usex contribdnn ON OFF)
+			-DBUILD_opencv_dnn=$(multilib_native_usex contribdnn ON OFF)
 			-DBUILD_opencv_xfeatures2d=$(usex contribxfeatures2d ON OFF)
 			-DBUILD_opencv_cvv=$(usex contribcvv ON OFF)
 			-DBUILD_opencv_hdf=$(multilib_native_usex contribhdf ON OFF)
