@@ -1,0 +1,9 @@
+--- a/cmake/OpenCVDetectFlatbuffers.cmake
++++ b/cmake/OpenCVDetectFlatbuffers.cmake
+@@ -1,5 +1,5 @@
+ if(WITH_FLATBUFFERS)
+-  find_package(flatbuffers REQUIRED)
++  find_package(flatbuffers REQUIRED PATHS /usr/lib64/cmake/flatbuffers/)
+   set(HAVE_FLATBUFFERS "${flatbuffers_FOUND}")
+   list(APPEND CUSTOM_STATUS flatbuffers)
+ 
