@@ -3,8 +3,7 @@
 # $Header: $
 
 EAPI="7"
-PYTHON_COMPAT=( python{3_12} )
-#PYTHON_DEPEND="3"
+PYTHON_COMPAT=( python3_{9..12} )
 
 inherit git-r3 distutils-r1
 
