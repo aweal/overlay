@@ -1,0 +1,12 @@
+--- a/CMakeLists.txt 
++++ b/CMakeLists.txt
+@@ -59,6 +59,9 @@
+   set(IMPLICIT_DEPENDS Qt::Test)
+ endif()
+ 
++# float suffix error:
++set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fext-numeric-literals")
++
+ # suppress bogus warning
+ # warning C4573 requires the compiler to capture 'this' but the current default capture mode does not allow it
+ # when using QObject::connect in lambda without capturing 'this' - which would lead to warnings
