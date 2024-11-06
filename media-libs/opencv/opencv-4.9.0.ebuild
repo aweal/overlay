@@ -3,8 +3,8 @@
 
 EAPI=8
 
-PYTHON_COMPAT=( python3_{10..12} )
-inherit cuda java-pkg-opt-2 java-ant-2 cmake-multilib flag-o-matic python-r1 toolchain-funcs virtualx
+PYTHON_COMPAT=( python3_{10..13} )
+inherit cuda java-pkg-opt-2 cmake-multilib flag-o-matic python-r1 toolchain-funcs virtualx
 
 DESCRIPTION="A collection of algorithms and sample code for various computer vision problems"
 HOMEPAGE="https://opencv.org"
