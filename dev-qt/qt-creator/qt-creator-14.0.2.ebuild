@@ -25,7 +25,7 @@ else
 	[[ ${QTC_PV} == ${PV} ]] && QTC_REL=official || QTC_REL=development
 	SRC_URI="https://download.qt.io/${QTC_REL}_releases/qtcreator/$(ver_cut 1-2)/${PV/_/-}/${QTC_P}.tar.xz"
 	S=${WORKDIR}/${QTC_P}
-	KEYWORDS="~amd64"
+	KEYWORDS="amd64"
 fi
 
 DESCRIPTION="Lightweight IDE for C++/QML development centering around Qt"
@@ -93,7 +93,7 @@ PATCHES=(
 	"${FILESDIR}"/${PN}-11.0.2-musl-no-execinfo.patch
 	"${FILESDIR}"/${PN}-12.0.0-musl-no-malloc-trim.patch
 	"${FILESDIR}"/${PN}-14.0.1-clang19.patch
-	"${FILESDIR}"/${PN}-14.0.0-float-suffix-q.patch
+	"${FILESDIR}"/${PN}-14.0.2-qt681.patch
 )
 
 pkg_setup() {
